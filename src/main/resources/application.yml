@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: franquicias-api
+  webflux:
+    base-path: /api
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_USER:admin}:${MONGO_PASSWORD:password}@${MONGO_HOST:localhost}:${MONGO_PORT:27017}/${MONGO_DATABASE:franquicias}?authSource=admin
+      auto-index-creation: true
+
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /api
+
+logging:
+  level:
+    root: INFO
+    com.franquicias: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.data: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+app:
+  name: API Gestión Franquicias
+  version: 1.0.0
+  description: API reactiva para gestión de franquicias, sucursales y productos

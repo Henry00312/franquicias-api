@@ -1,0 +1,29 @@
+# Convención de commits para el proyecto
+# Usar: git commit -m "tipo(scope): descripción"
+
+## Tipos de commits:
+# - feat: Nueva funcionalidad
+# - fix: Corrección de error
+# - docs: Cambios en documentación
+# - style: Cambios de estilo (formato, espacios, etc.)
+# - refactor: Refactorización de código
+# - perf: Mejora de rendimiento
+# - test: Agregar o modificar tests
+# - chore: Cambios en build, dependencies, etc.
+# - ci: Cambios en CI/CD
+# - revert: Revertir commit anterior
+
+## Ejemplos:
+# git commit -m "feat(franquicia): agregar endpoint para crear franquicia"
+# git commit -m "fix(producto): corregir validación de stock negativo"
+# git commit -m "docs(readme): actualizar instrucciones de instalación"
+# git commit -m "test(franquicia): agregar tests unitarios para servicio"
+
+[core]
+    autocrlf = false
+    
+[commit]
+    template = .git-commit-template
+
+[branch]
+    autosetuprebase = always

@@ -1,0 +1,58 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:7.0-alpine
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: password
+        options: >-
+          --health-cmd mongosh
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 27017:27017
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configurar Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Compilar proyecto
+      run: mvn clean compile
+
+    - name: Ejecutar tests unitarios
+      run: mvn test
+
+    - name: Generar reporte de cobertura
+      run: mvn jacoco:report
+
+    - name: Verificar calidad de código
+      run: mvn spotbugs:check
+
+    - name: Empaquetar aplicación
+      run: mvn clean package -DskipTests
+
+    - name: Construir imagen Docker
+      run: docker build -t franquicias-api:${{ github.sha }} .
+
+    - name: Push Docker image
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        echo "Docker image built successfully: franquicias-api:${{ github.sha }}"
