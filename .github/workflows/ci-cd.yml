@@ -14,8 +14,8 @@ jobs:
       mongodb:
         image: mongo:7.0-alpine
         env:
-          MONGO_INITDB_ROOT_USERNAME: admin
-          MONGO_INITDB_ROOT_PASSWORD: password
+          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_USERNAME }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
         options: >-
           --health-cmd mongosh
           --health-interval 10s
@@ -45,7 +45,7 @@ jobs:
     - name: Empaquetar aplicación
       run: mvn clean package -DskipTests
       env:
-        MONGODB_URI: ${{ secrets.MONGODB_URI }
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
 
     - name: Construir imagen Docker
       run: docker build -t franquicias-api:${{ github.sha }} .
