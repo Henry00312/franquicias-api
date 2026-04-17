@@ -4,8 +4,8 @@ spring:
   webflux:
     base-path: /api
   data:
-    mongodb:gi
-      uri: ${MONGODB_URI:mongodb://admin:password@localhost:27017/franquicias?authSource=admin}
+    mongodb:
+      uri: ${MONGODB_URI}
       auto-index-creation: true
 
 server:

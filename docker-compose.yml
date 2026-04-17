@@ -1,7 +1,7 @@
 services:
   # Servicio MongoDB
   mongodb:
-    image: mongo:7.0-alpine
+    image: mongo:7.0
     container_name: franquicias-mongodb
     ports:
       - "27017:27017"
@@ -35,6 +35,7 @@ services:
       MONGO_PORT: ${MONGO_PORT}
       MONGO_DATABASE: ${MONGO_DATABASE}
       SERVER_PORT: ${API_PORT}
+      MONGODB_URI: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DATABASE}?authSource=admin
     depends_on:
       mongodb:
         condition: service_healthy
