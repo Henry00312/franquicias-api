@@ -53,6 +53,8 @@ yarn.lock
 .env
 .env.local
 .env.*.local
+.env.example.local
+
 
 # Database
 *.db
@@ -75,6 +77,6 @@ Thumbs.db
 .DS_Store
 
 # Spring Boot
-application-*.properties
-application-*.yml
+application-local.yml
+application-local.properties
 .m2/

@@ -10,12 +10,12 @@ terraform {
 }
 
 provider "docker" {
-  host = "unix:///var/run/docker.sock"
+  host = var.docker_host
 }
 
 # Red Docker
 resource "docker_network" "franquicias_network" {
-  name   = "franquicias-network"
+  name   = var.network_name
   driver = "bridge"
 }
 
@@ -32,19 +32,19 @@ resource "docker_image" "mongodb" {
 }
 
 resource "docker_container" "mongodb" {
-  name    = "franquicias-mongodb"
-  image   = docker_image.mongodb.image_id
+  name           = "franquicias-mongodb"
+  image          = docker_image.mongodb.image_id
   restart_policy = "unless-stopped"
-  
+
   ports {
     internal = 27017
-    external = 27017
+    external = var.mongo_port
   }
 
   env = [
-    "MONGO_INITDB_ROOT_USERNAME=admin",
-    "MONGO_INITDB_ROOT_PASSWORD=password",
-    "MONGO_INITDB_DATABASE=franquicias"
+    "MONGO_INITDB_ROOT_USERNAME=${var.mongo_username}",
+    "MONGO_INITDB_ROOT_PASSWORD=${var.mongo_password}",
+    "MONGO_INITDB_DATABASE=${var.mongo_database}"
   ]
 
   volumes {
@@ -76,7 +76,7 @@ resource "docker_container" "mongodb" {
 resource "docker_image" "franquicias_api" {
   name         = "franquicias-api:latest"
   keep_locally = false
-  
+
   build {
     context    = path.module
     dockerfile = "Dockerfile"
@@ -87,22 +87,22 @@ resource "docker_image" "franquicias_api" {
 
 # Contenedor de la API
 resource "docker_container" "franquicias_api" {
-  name    = "franquicias-api"
-  image   = docker_image.franquicias_api.image_id
+  name           = "franquicias-api"
+  image          = docker_image.franquicias_api.image_id
   restart_policy = "unless-stopped"
 
   ports {
     internal = 8080
-    external = 8080
+    external = var.api_port
   }
 
   env = [
-    "MONGO_USER=admin",
-    "MONGO_PASSWORD=password",
+    "MONGO_USER=${var.mongo_username}",
+    "MONGO_PASSWORD=${var.mongo_password}",
     "MONGO_HOST=mongodb",
-    "MONGO_PORT=27017",
-    "MONGO_DATABASE=franquicias",
-    "SERVER_PORT=8080"
+    "MONGO_PORT=${var.mongo_port}",
+    "MONGO_DATABASE=${var.mongo_database}",
+    "SERVER_PORT=${var.api_port}"
   ]
 
   networks_advanced {
@@ -110,10 +110,10 @@ resource "docker_container" "franquicias_api" {
   }
 
   healthcheck {
-    test     = ["CMD", "curl", "-f", "http://localhost:8080/api/franquicias"]
-    interval = "30s"
-    timeout  = "10s"
-    retries  = 3
+    test         = ["CMD", "curl", "-f", "http://localhost:8080/api/franquicias"]
+    interval     = "30s"
+    timeout      = "10s"
+    retries      = 3
     start_period = "40s"
   }
 
@@ -123,12 +123,12 @@ resource "docker_container" "franquicias_api" {
 # Outputs
 output "api_url" {
   description = "URL de la API"
-  value       = "http://localhost:8080/api"
+  value       = "http://localhost:${var.api_port}/api"
 }
 
 output "mongodb_connection" {
   description = "Cadena de conexión de MongoDB"
-  value       = "mongodb://admin:password@localhost:27017/franquicias?authSource=admin"
+  value       = "mongodb://${var.mongo_username}:***@localhost:${var.mongo_port}/${var.mongo_database}?authSource=admin"
 }
 
 output "container_mongodb_id" {

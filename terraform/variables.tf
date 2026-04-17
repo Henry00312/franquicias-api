@@ -7,13 +7,11 @@ variable "docker_host" {
 variable "mongo_username" {
   description = "Usuario de MongoDB"
   type        = string
-  default     = "admin"
 }
 
 variable "mongo_password" {
   description = "Contraseña de MongoDB"
   type        = string
-  default     = "password"
   sensitive   = true
 }
 

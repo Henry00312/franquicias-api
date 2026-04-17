@@ -35,16 +35,27 @@ franquicias-api/
 ├── Dockerfile                       # Containerización de la API
 ├── docker-compose.yml               # Orquestación de contenedores
 ├── init-mongo.js                    # Script de inicialización de MongoDB
+├── .env.example                     # Ejemplo de variables de entorno
 └── README.md                        # Este archivo
 ```
 
 ## 🚀 Requisitos Previos
 
-- Java 17 o superior
+- Java 25
 - Maven 3.9.x o superior
 - Docker y Docker Compose
 - Git
 - Terraform (opcional, para Infrastructure as Code)
+
+## ⚙️ Configuración
+
+Copia el archivo de ejemplo y configura tus variables:
+
+```bash
+cp .env.example .env
+```
+
+Edita `.env` con tus credenciales reales.
 
 ## 💻 Instalación Local
 
@@ -77,7 +88,7 @@ docker-compose up --build
 
 La API estará disponible en: `http://localhost:8080/api`
 
-MongoDB estará disponible en: `mongodb://admin:password@localhost:27017/franquicias`
+MongoDB estará disponible en: `mongodb://<MONGO_USERNAME>:<MONGO_PASSWORD>@localhost:27017/franquicias`
 
 #### Opción B: Con Terraform
 
@@ -90,7 +101,7 @@ terraform apply
 
 #### Opción C: Localmente
 
-Asegúrate de tener MongoDB ejecutándose localmente en el puerto 27017 con usuario `admin` y contraseña `password`.
+Asegúrate de tener MongoDB ejecutándose localmente. Copia `.env.example` a `.env` y configura tus credenciales.
 
 ```bash
 mvn spring-boot:run
@@ -219,10 +230,11 @@ docker build -t franquicias-api:latest .
 ```bash
 docker run -p 8080:8080 \
   -e MONGO_HOST=mongodb \
-  -e MONGO_PORT=27017 \
-  -e MONGO_USER=admin \
-  -e MONGO_PASSWORD=password \
-  -e MONGO_DATABASE=franquicias \
+  -e MONGO_PORT=${MONGO_PORT} \
+  -e MONGO_USER=${MONGO_USERNAME} \
+  -e MONGO_PASSWORD=${MONGO_PASSWORD} \
+  -e MONGO_DATABASE=${MONGO_DATABASE} \
+  -e SERVER_PORT=${API_PORT} \
   franquicias-api:latest
 ```
 
@@ -300,19 +312,19 @@ git push origin feature/nueva-funcionalidad
 
 | Variable | Valor por defecto | Descripción |
 |----------|-------------------|-------------|
-| MONGO_USER | admin | Usuario de MongoDB |
-| MONGO_PASSWORD | password | Contraseña de MongoDB |
+| MONGO_USERNAME | ver .env | Usuario de MongoDB |
+| MONGO_PASSWORD | ver .env | Contraseña de MongoDB |
 | MONGO_HOST | localhost | Host de MongoDB |
 | MONGO_PORT | 27017 | Puerto de MongoDB |
 | MONGO_DATABASE | franquicias | Base de datos MongoDB |
-| SERVER_PORT | 8080 | Puerto del servidor |
+| API_PORT | 8080 | Puerto del servidor |
 
 ## 🐛 Troubleshooting
 
 ### MongoDB no se conecta
 
 1. Verificar que MongoDB esté ejecutándose: `docker ps`
-2. Verificar variables de entorno
+2. Verificar que el archivo `.env` tenga las credenciales correctas
 3. Revisar logs: `docker-compose logs mongodb`
 
 ### API no responde
@@ -329,7 +341,7 @@ git push origin feature/nueva-funcionalidad
 
 ## 📚 Tecnologías Utilizadas
 
-- **Spring Boot 3.2.4**: Framework Java
+- **Spring Boot 3.5.13**: Framework Java
 - **Spring WebFlux**: Programación reactiva
 - **Spring Data MongoDB Reactive**: Acceso a datos reactivo
 - **Project Reactor**: Implementación reactiva
