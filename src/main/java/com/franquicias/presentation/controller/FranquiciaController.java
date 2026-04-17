@@ -83,13 +83,13 @@ public class FranquiciaController {
      * DELETE /api/franquicias/{id}
      */
     @DeleteMapping("/{id}")
-    public Mono<ResponseEntity<Void>> eliminarFranquicia(@PathVariable String id) {
+    public Mono<ResponseEntity<String>> eliminarFranquicia(@PathVariable String id) {
         log.info("Solicitud de eliminar franquicia: {}", id);
         return franquiciaUseCase.eliminarFranquicia(id)
-                .map(v -> ResponseEntity.noContent().<Void>build())
-                .onErrorResume(error -> {
-                    log.error("Error al eliminar franquicia", error);
-                    return Mono.just(ResponseEntity.notFound().build());
-                });
+            .thenReturn(ResponseEntity.ok("Franquicia eliminada exitosamente"))
+            .onErrorResume(error -> {
+                log.error("Error al eliminar franquicia", error);
+                return Mono.just(ResponseEntity.notFound().<String>build());
+            });
     }
 }

@@ -114,17 +114,17 @@ public class ProductoController {
      * DELETE /api/franquicias/{franquiciaId}/sucursales/{sucursalId}/productos/{productoId}
      */
     @DeleteMapping("/{productoId}")
-    public Mono<ResponseEntity<Void>> eliminarProducto(
+    public Mono<ResponseEntity<String>> eliminarProducto(
             @PathVariable String franquiciaId,
             @PathVariable String sucursalId,
             @PathVariable String productoId) {
         log.info("Solicitud de eliminar producto: {}", productoId);
         return productoUseCase.eliminarProducto(franquiciaId, sucursalId, productoId)
-                .map(v -> ResponseEntity.noContent().<Void>build())
+                .thenReturn(ResponseEntity.ok("Producto eliminado exitosamente"))
                 .onErrorResume(error -> {
                     log.error("Error al eliminar producto", error);
-                    return Mono.just(ResponseEntity.notFound().build());
-                });
+                    return Mono.just(ResponseEntity.notFound().<String>build());
+            });
     }
 
     /**

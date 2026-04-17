@@ -89,15 +89,15 @@ public class SucursalController {
      * DELETE /api/franquicias/{franquiciaId}/sucursales/{sucursalId}
      */
     @DeleteMapping("/{sucursalId}")
-    public Mono<ResponseEntity<Void>> eliminarSucursal(
+    public Mono<ResponseEntity<String>> eliminarSucursal(
             @PathVariable String franquiciaId,
             @PathVariable String sucursalId) {
         log.info("Solicitud de eliminar sucursal: {}", sucursalId);
         return sucursalUseCase.eliminarSucursal(franquiciaId, sucursalId)
-                .map(v -> ResponseEntity.noContent().<Void>build())
+                .thenReturn(ResponseEntity.ok("Sucursal eliminada exitosamente"))
                 .onErrorResume(error -> {
                     log.error("Error al eliminar sucursal", error);
-                    return Mono.just(ResponseEntity.notFound().build());
-                });
+                    return Mono.just(ResponseEntity.notFound().<String>build());
+            });
     }
 }
