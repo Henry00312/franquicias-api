@@ -31,14 +31,7 @@ public class FranquiciaController {
     public Mono<ResponseEntity<FranquiciaDTO>> crearFranquicia(@Valid @RequestBody FranquiciaDTO franquiciaDTO) {
         log.info("Solicitud de crear franquicia: {}", franquiciaDTO.getNombre());
         return franquiciaUseCase.crearFranquicia(franquiciaDTO)
-                .map(dto -> ResponseEntity.status(HttpStatus.CREATED).body(dto))
-                .onErrorResume(error -> {
-                    log.error("Error al crear franquicia", error);
-                    if (error instanceof IllegalStateException) {
-                        return Mono.just(ResponseEntity.status(HttpStatus.CONFLICT).build());
-                    }
-                    return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
-                });
+                .map(dto -> ResponseEntity.status(HttpStatus.CREATED).body(dto));
     }
 
     /**

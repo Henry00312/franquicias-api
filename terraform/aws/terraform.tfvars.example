@@ -1,0 +1,13 @@
+aws_region      = "us-east-1"
+project_name    = "franquicias-api"
+environment     = "dev"
+
+# Usa una imagen publicada en ECR o Docker Hub
+container_image = "123456789012.dkr.ecr.us-east-1.amazonaws.com/franquicias-api:latest"
+
+desired_count   = 1
+task_cpu        = 256
+task_memory     = 512
+
+# Mongo Atlas o Mongo gestionado
+mongodb_uri     = "mongodb+srv://usuario:password@cluster.mongodb.net/franquicias?retryWrites=true&w=majority"

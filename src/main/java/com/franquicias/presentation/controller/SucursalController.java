@@ -33,14 +33,7 @@ public class SucursalController {
             @Valid @RequestBody SucursalDTO sucursalDTO) {
         log.info("Solicitud de crear sucursal en franquicia: {}", franquiciaId);
         return sucursalUseCase.crearSucursal(franquiciaId, sucursalDTO)
-                .map(dto -> ResponseEntity.status(HttpStatus.CREATED).body(dto))
-                .onErrorResume(error -> {
-                    log.error("Error al crear sucursal", error);
-                    if (error instanceof IllegalStateException) {
-                        return Mono.just(ResponseEntity.status(HttpStatus.CONFLICT).build());
-                    }
-                    return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
-                });
+                .map(dto -> ResponseEntity.status(HttpStatus.CREATED).body(dto));
     }
 
     /**
@@ -80,11 +73,7 @@ public class SucursalController {
         log.info("Solicitud de actualizar nombre de sucursal: {}", sucursalId);
         return sucursalUseCase.actualizarNombreSucursal(franquiciaId, sucursalId, sucursalDTO.getNombre())
                 .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build())
-                .onErrorResume(error -> {
-                    log.error("Error al actualizar sucursal", error);
-                    return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
-                });
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     /**

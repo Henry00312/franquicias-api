@@ -71,6 +71,10 @@ terraform.tfstate.*
 
 # Docker
 docker-compose.override.yml
+/container-definitions.json
+/ecs-register-td.json
+/taskdef-aws.json
+/taskdef-register.json
 
 # OS
 Thumbs.db

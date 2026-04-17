@@ -34,14 +34,7 @@ public class ProductoController {
             @Valid @RequestBody ProductoDTO productoDTO) {
         log.info("Solicitud de crear producto en sucursal: {}", sucursalId);
         return productoUseCase.crearProducto(franquiciaId, sucursalId, productoDTO)
-                .map(dto -> ResponseEntity.status(HttpStatus.CREATED).body(dto))
-                .onErrorResume(error -> {
-                    log.error("Error al crear producto", error);
-                    if (error instanceof IllegalStateException) {
-                        return Mono.just(ResponseEntity.status(HttpStatus.CONFLICT).build());
-                    }
-                    return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
-                });
+                .map(dto -> ResponseEntity.status(HttpStatus.CREATED).body(dto));
     }
 
     /**

@@ -1,10 +1,22 @@
 {
   "info": {
-    "name": "API Gestión Franquicias",
-    "description": "Colección de requests para probar la API",
+    "name": "API Gestion Franquicias",
+    "description": "Coleccion de requests para probar la API en AWS o local usando variables.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
+    {
+      "name": "Sistema",
+      "item": [
+        {
+          "name": "Estado API",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}"
+          }
+        }
+      ]
+    },
     {
       "name": "Franquicias",
       "item": [
@@ -12,39 +24,73 @@
           "name": "Crear Franquicia",
           "request": {
             "method": "POST",
-            "header": [{"key": "Content-Type", "value": "application/json"}],
-            "body": {"mode": "raw", "raw": "{\n  \"nombre\": \"Franquicia McDonald's\"\n}"},
-            "url": {"raw": "http://localhost:8080/api/franquicias", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias"]}
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Franquicia McDonald's\"\n}"
+            },
+            "url": "{{base_url}}/franquicias"
+          }
+        },
+        {
+          "name": "Crear Franquicia Duplicada (409)",
+          "request": {
+            "method": "POST",
+            "description": "Ejecuta esta request despues de crear una franquicia con el mismo nombre para validar respuesta 409 con mensaje.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Franquicia McDonald's\"\n}"
+            },
+            "url": "{{base_url}}/franquicias"
           }
         },
         {
           "name": "Obtener todas las Franquicias",
           "request": {
             "method": "GET",
-            "url": {"raw": "http://localhost:8080/api/franquicias", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias"]}
+            "url": "{{base_url}}/franquicias"
           }
         },
         {
           "name": "Obtener Franquicia por ID",
           "request": {
             "method": "GET",
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}"]}
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}"
           }
         },
         {
           "name": "Actualizar nombre de Franquicia",
           "request": {
             "method": "PATCH",
-            "header": [{"key": "Content-Type", "value": "application/json"}],
-            "body": {"mode": "raw", "raw": "{\n  \"nombre\": \"Franquicia McDonald's - Actualizada\"\n}"},
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}/nombre", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}", "nombre"]}
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Franquicia McDonald's - Actualizada\"\n}"
+            },
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}/nombre"
           }
         },
         {
           "name": "Eliminar Franquicia",
           "request": {
             "method": "DELETE",
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}"]}
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}"
           }
         }
       ]
@@ -56,39 +102,55 @@
           "name": "Crear Sucursal",
           "request": {
             "method": "POST",
-            "header": [{"key": "Content-Type", "value": "application/json"}],
-            "body": {"mode": "raw", "raw": "{\n  \"nombre\": \"Sucursal Centro\"\n}"},
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}/sucursales", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}", "sucursales"]}
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Sucursal Centro\"\n}"
+            },
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}/sucursales"
           }
         },
         {
           "name": "Obtener Sucursales de Franquicia",
           "request": {
             "method": "GET",
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}/sucursales", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}", "sucursales"]}
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}/sucursales"
           }
         },
         {
           "name": "Obtener Sucursal por ID",
           "request": {
             "method": "GET",
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}", "sucursales", "{{sucursal_id}}"]}
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}"
           }
         },
         {
           "name": "Actualizar nombre de Sucursal",
           "request": {
             "method": "PATCH",
-            "header": [{"key": "Content-Type", "value": "application/json"}],
-            "body": {"mode": "raw", "raw": "{\n  \"nombre\": \"Sucursal Norte - Actualizada\"\n}"},
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}/nombre", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}", "sucursales", "{{sucursal_id}}", "nombre"]}
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Sucursal Norte - Actualizada\"\n}"
+            },
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}/nombre"
           }
         },
         {
           "name": "Eliminar Sucursal",
           "request": {
             "method": "DELETE",
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}", "sucursales", "{{sucursal_id}}"]}
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}"
           }
         }
       ]
@@ -100,48 +162,72 @@
           "name": "Crear Producto",
           "request": {
             "method": "POST",
-            "header": [{"key": "Content-Type", "value": "application/json"}],
-            "body": {"mode": "raw", "raw": "{\n  \"nombre\": \"Big Mac\",\n  \"stock\": 100\n}"},
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}/productos", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}", "sucursales", "{{sucursal_id}}", "productos"]}
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Big Mac\",\n  \"stock\": 100\n}"
+            },
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}/productos"
           }
         },
         {
           "name": "Obtener Productos de Sucursal",
           "request": {
             "method": "GET",
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}/productos", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}", "sucursales", "{{sucursal_id}}", "productos"]}
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}/productos"
           }
         },
         {
           "name": "Obtener Producto por ID",
           "request": {
             "method": "GET",
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}/productos/{{producto_id}}", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}", "sucursales", "{{sucursal_id}}", "productos", "{{producto_id}}"]}
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}/productos/{{producto_id}}"
           }
         },
         {
           "name": "Actualizar Stock de Producto",
           "request": {
             "method": "PATCH",
-            "header": [{"key": "Content-Type", "value": "application/json"}],
-            "body": {"mode": "raw", "raw": "{\n  \"stock\": 50\n}"},
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}/productos/{{producto_id}}/stock", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}", "sucursales", "{{sucursal_id}}", "productos", "{{producto_id}}", "stock"]}
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stock\": 50\n}"
+            },
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}/productos/{{producto_id}}/stock"
           }
         },
         {
           "name": "Actualizar nombre de Producto",
           "request": {
             "method": "PATCH",
-            "header": [{"key": "Content-Type", "value": "application/json"}],
-            "body": {"mode": "raw", "raw": "{\n  \"nombre\": \"Big Mac Actualizado\"\n}"},
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}/productos/{{producto_id}}/nombre", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}", "sucursales", "{{sucursal_id}}", "productos", "{{producto_id}}", "nombre"]}
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Big Mac Actualizado\"\n}"
+            },
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}/productos/{{producto_id}}/nombre"
           }
         },
         {
           "name": "Eliminar Producto",
           "request": {
             "method": "DELETE",
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}/productos/{{producto_id}}", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}", "sucursales", "{{sucursal_id}}", "productos", "{{producto_id}}"]}
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}/sucursales/{{sucursal_id}}/productos/{{producto_id}}"
           }
         }
       ]
@@ -150,19 +236,40 @@
       "name": "Reportes",
       "item": [
         {
-          "name": "Productos con Máximo Stock por Sucursal",
+          "name": "Productos con Maximo Stock por Sucursal",
           "request": {
             "method": "GET",
             "description": "Obtiene por franquicia el producto con mayor stock en cada sucursal.",
-            "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}/productos-max-stock", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}", "productos-max-stock"]}
+            "url": "{{base_url}}/franquicias/{{franquicia_id}}/productos-max-stock"
           }
         }
       ]
     }
   ],
   "variable": [
-    {"key": "franquicia_id", "value": "YOUR_FRANQUICIA_ID"},
-    {"key": "sucursal_id", "value": "YOUR_SUCURSAL_ID"},
-    {"key": "producto_id", "value": "YOUR_PRODUCTO_ID"}
+    {
+      "key": "base_url",
+      "value": "{{aws_base_url}}"
+    },
+    {
+      "key": "aws_base_url",
+      "value": "http://franquicias-api-alb-1260749581.us-east-1.elb.amazonaws.com/api"
+    },
+    {
+      "key": "local_base_url",
+      "value": "http://localhost:8080/api"
+    },
+    {
+      "key": "franquicia_id",
+      "value": "YOUR_FRANQUICIA_ID"
+    },
+    {
+      "key": "sucursal_id",
+      "value": "YOUR_SUCURSAL_ID"
+    },
+    {
+      "key": "producto_id",
+      "value": "YOUR_PRODUCTO_ID"
+    }
   ]
 }
