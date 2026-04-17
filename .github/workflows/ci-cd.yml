@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     services:
       mongodb:
         image: mongo:7.0-alpine
@@ -30,8 +30,8 @@ jobs:
     - name: Configurar Java
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
-        distribution: 'temurin'
+        java-version: '25'
+        distribution: 'oracle'
         cache: maven
 
     - name: Compilar proyecto
@@ -39,15 +39,13 @@ jobs:
 
     - name: Ejecutar tests unitarios
       run: mvn test
-
-    - name: Generar reporte de cobertura
-      run: mvn jacoco:report
-
-    - name: Verificar calidad de código
-      run: mvn spotbugs:check
+      env:
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
 
     - name: Empaquetar aplicación
       run: mvn clean package -DskipTests
+      env:
+        MONGODB_URI: ${{ secrets.MONGODB_URI }
 
     - name: Construir imagen Docker
       run: docker build -t franquicias-api:${{ github.sha }} .

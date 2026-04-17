@@ -5,7 +5,7 @@ spring:
     base-path: /api
   data:
     mongodb:
-      uri: mongodb+srv://henrybarreraosorio:Henry2850@cluster0.xoobuap.mongodb.net/franquicias?retryWrites=true&w=majority&appName=Cluster0
+      uri: ${MONGODB_URI:mongodb://admin:password@localhost:27017/franquicias?authSource=admin}
       auto-index-creation: true
 
 server:
