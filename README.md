@@ -24,13 +24,22 @@ API reactiva para gestionar franquicias, sucursales y productos con Spring Boot 
 ## Estructura del proyecto
 
 ```text
-src/main/java/com/franquicias
-├── domain        # Entidades y contratos de repositorio
-├── application   # DTOs, mappers, servicios y casos de uso
-└── presentation  # Controladores REST
-
-src/test/java/com/franquicias
-└── application/service
+src/
+├── main/
+│   ├── java/com/franquicias/
+│   │   ├── domain/                    # Entidades y contratos de repositorio
+│   │   │   ├── model/
+│   │   │   └── repository/
+│   │   ├── application/               # DTOs, mappers, servicios y casos de uso
+│   │   │   ├── dto/
+│   │   │   ├── service/
+│   │   │   └── usecase/
+│   │   └── presentation/              # Controladores REST
+│   │       └── controller/
+│   └── resources/                     # Configuracion y logging
+└── test/
+	└── java/com/franquicias/
+		└── application/service/       # Tests de servicios
 ```
 
 ## Variables de entorno
