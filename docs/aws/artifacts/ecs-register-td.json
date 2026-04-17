@@ -1,4 +1,4 @@
-﻿{
+{
     "networkMode":  "awsvpc",
     "placementConstraints":  [
 
@@ -32,7 +32,7 @@
                                                          },
                                                          {
                                                              "name":  "MONGODB_URI",
-                                                             "value":  "mongodb+srv://henrybarreraosorio:Henry2850@cluster0.xoobuap.mongodb.net/franquicias?retryWrites=true\u0026w=majority\u0026appName=Cluster0"
+                                                             "value":  "mongodb+srv://<user>:<password>@cluster.mongodb.net/franquicias?retryWrites=true\u0026w=majority\u0026appName=Cluster0"
                                                          }
                                                      ],
                                      "mountPoints":  [
