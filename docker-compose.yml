@@ -35,7 +35,7 @@ services:
       MONGO_PORT: ${MONGO_PORT}
       MONGO_DATABASE: ${MONGO_DATABASE}
       SERVER_PORT: ${API_PORT}
-      MONGODB_URI: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DATABASE}?authSource=admin
+      MONGODB_URI: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cluster0.xoobuap.mongodb.net/${MONGO_DATABASE}?retryWrites=true&w=majority&appName=Cluster0
     depends_on:
       mongodb:
         condition: service_healthy
