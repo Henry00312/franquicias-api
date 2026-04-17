@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.ArrayList;
 
 /**
@@ -28,14 +29,19 @@ public class FranquiciaService implements FranquiciaUseCase {
     @Override
     public Mono<FranquiciaDTO> crearFranquicia(FranquiciaDTO franquiciaDTO) {
         log.debug("Creando nueva franquicia: {}", franquiciaDTO.getNombre());
+        String nombreFranquicia = Objects.requireNonNull(franquiciaDTO.getNombre(), "El nombre de la franquicia es requerido");
         
-        return Mono.just(franquiciaDTO)
-                .map(dto -> {
-                    Franquicia franquicia = franquiciaMapper.toEntity(dto);
+        return franquiciaRepository.existsByNombreIgnoreCase(nombreFranquicia)
+                .flatMap(existe -> {
+                    if (Boolean.TRUE.equals(existe)) {
+                        return Mono.error(new IllegalStateException("Ya existe una franquicia con ese nombre"));
+                    }
+
+                    Franquicia franquicia = franquiciaMapper.toEntity(franquiciaDTO);
                     franquicia.setFechaCreacion(LocalDateTime.now());
                     franquicia.setFechaActualizacion(LocalDateTime.now());
                     franquicia.setSucursales(new ArrayList<>());
-                    return franquicia;
+                    return Mono.just(franquicia);
                 })
                 .flatMap(franquiciaRepository::save)
                 .map(franquiciaMapper::toDTO)
@@ -46,8 +52,9 @@ public class FranquiciaService implements FranquiciaUseCase {
     @Override
     public Mono<FranquiciaDTO> obtenerFranquicia(String id) {
         log.debug("Obteniendo franquicia con ID: {}", id);
+        String franquiciaId = Objects.requireNonNull(id, "El id de la franquicia es requerido");
         
-        return franquiciaRepository.findById(id)
+        return franquiciaRepository.findById(franquiciaId)
                 .map(franquiciaMapper::toDTO)
                 .doOnSuccess(dto -> log.debug("Franquicia obtenida: {}", dto.getId()))
                 .doOnError(error -> log.error("Error al obtener franquicia", error));
@@ -65,23 +72,26 @@ public class FranquiciaService implements FranquiciaUseCase {
     @Override
     public Mono<FranquiciaDTO> actualizarNombreFranquicia(String id, String nuevoNombre) {
         log.debug("Actualizando nombre de franquicia: {} -> {}", id, nuevoNombre);
+        String franquiciaId = Objects.requireNonNull(id, "El id de la franquicia es requerido");
+        String nombreActualizado = Objects.requireNonNull(nuevoNombre, "El nuevo nombre es requerido");
         
-        return franquiciaRepository.findById(id)
+        return franquiciaRepository.findById(franquiciaId)
                 .flatMap(franquicia -> {
-                    franquicia.actualizarNombre(nuevoNombre);
+                    franquicia.actualizarNombre(nombreActualizado);
                     return franquiciaRepository.save(franquicia);
                 })
                 .map(franquiciaMapper::toDTO)
-                .doOnSuccess(dto -> log.info("Nombre de franquicia actualizado: {}", id))
+                .doOnSuccess(dto -> log.info("Nombre de franquicia actualizado: {}", franquiciaId))
                 .doOnError(error -> log.error("Error al actualizar nombre de franquicia", error));
     }
 
     @Override
     public Mono<Void> eliminarFranquicia(String id) {
         log.debug("Eliminando franquicia: {}", id);
+        String franquiciaId = Objects.requireNonNull(id, "El id de la franquicia es requerido");
         
-        return franquiciaRepository.deleteById(id)
-                .doOnSuccess(v -> log.info("Franquicia eliminada: {}", id))
+        return franquiciaRepository.deleteById(franquiciaId)
+            .doOnSuccess(v -> log.info("Franquicia eliminada: {}", franquiciaId))
                 .doOnError(error -> log.error("Error al eliminar franquicia", error));
     }
 }

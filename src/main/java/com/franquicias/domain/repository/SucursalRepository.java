@@ -16,4 +16,6 @@ public interface SucursalRepository extends ReactiveMongoRepository<Sucursal, St
     Flux<Sucursal> findByFranquiciaId(String franquiciaId);
     
     Mono<Sucursal> findByIdAndFranquiciaId(String id, String franquiciaId);
+
+    Mono<Boolean> existsByFranquiciaIdAndNombreIgnoreCase(String franquiciaId, String nombre);
 }

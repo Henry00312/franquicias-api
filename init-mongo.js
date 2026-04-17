@@ -10,11 +10,11 @@ db.createCollection('franquicias', {
       bsonType: 'object',
       required: ['nombre', 'fechaCreacion'],
       properties: {
-        _id: { bsonType: 'objectId' },
+        _id: { bsonType: ['objectId', 'string'] },
         nombre: { bsonType: 'string' },
         sucursales: { 
           bsonType: 'array',
-          items: { bsonType: 'objectId' }
+          items: { bsonType: 'object' }
         },
         fechaCreacion: { bsonType: 'date' },
         fechaActualizacion: { bsonType: 'date' }
@@ -29,12 +29,12 @@ db.createCollection('sucursales', {
       bsonType: 'object',
       required: ['nombre', 'franquiciaId', 'fechaCreacion'],
       properties: {
-        _id: { bsonType: 'objectId' },
+        _id: { bsonType: ['objectId', 'string'] },
         nombre: { bsonType: 'string' },
-        franquiciaId: { bsonType: 'objectId' },
+        franquiciaId: { bsonType: 'string' },
         productos: { 
           bsonType: 'array',
-          items: { bsonType: 'objectId' }
+          items: { bsonType: 'object' }
         },
         fechaCreacion: { bsonType: 'date' },
         fechaActualizacion: { bsonType: 'date' }
@@ -49,9 +49,9 @@ db.createCollection('productos', {
       bsonType: 'object',
       required: ['nombre', 'sucursalId', 'stock', 'fechaCreacion'],
       properties: {
-        _id: { bsonType: 'objectId' },
+        _id: { bsonType: ['objectId', 'string'] },
         nombre: { bsonType: 'string' },
-        sucursalId: { bsonType: 'objectId' },
+        sucursalId: { bsonType: 'string' },
         stock: { bsonType: 'int' },
         fechaCreacion: { bsonType: 'date' },
         fechaActualizacion: { bsonType: 'date' }

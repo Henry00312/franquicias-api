@@ -2,18 +2,18 @@
 
 API reactiva desarrollada en Spring Boot para gestionar franquicias, sucursales y productos con inventario.
 
-## 📋 Características Principales
+## Características Principales
 
-- ✅ **Arquitectura limpia (Clean Architecture)**: Separación clara de responsabilidades
-- ✅ **Programación Reactiva**: Utiliza Spring WebFlux y Project Reactor para operaciones no bloqueantes
-- ✅ **Base de datos reactiva**: MongoDB con Spring Data Reactive
-- ✅ **Tests unitarios**: Cobertura completa con JUnit 5 y Mockito
-- ✅ **Containerización**: Docker y Docker Compose para ambiente aislado
-- ✅ **Infrastructure as Code**: Terraform para provisionar infraestructura
-- ✅ **Validaciones**: Validación de datos con Jakarta Validation
-- ✅ **Logging estructurado**: Logs en tiempo real con SLF4J
+- **Arquitectura limpia (Clean Architecture)**: Separación clara de responsabilidades
+- **Programación Reactiva**: Utiliza Spring WebFlux y Project Reactor para operaciones no bloqueantes
+- **Base de datos reactiva**: MongoDB con Spring Data Reactive
+- **Tests unitarios**: Cobertura completa con JUnit 5 y Mockito
+- **Containerización**: Docker y Docker Compose para ambiente aislado
+- **Infrastructure as Code**: Terraform para provisionar infraestructura
+- **Validaciones**: Validación de datos con Jakarta Validation
+- **Logging estructurado**: Logs en tiempo real con SLF4J
 
-## 🏗️ Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 franquicias-api/
@@ -39,7 +39,7 @@ franquicias-api/
 └── README.md                        # Este archivo
 ```
 
-## 🚀 Requisitos Previos
+## Requisitos Previos
 
 - Java 25
 - Maven 3.9.x o superior
@@ -47,7 +47,7 @@ franquicias-api/
 - Git
 - Terraform (opcional, para Infrastructure as Code)
 
-## ⚙️ Configuración
+## Configuración
 
 Copia el archivo de ejemplo y configura tus variables:
 
@@ -57,7 +57,7 @@ cp .env.example .env
 
 Edita `.env` con tus credenciales reales.
 
-## 💻 Instalación Local
+## Instalación Local
 
 ### 1. Clonar el repositorio
 
@@ -107,7 +107,7 @@ Asegúrate de tener MongoDB ejecutándose localmente. Copia `.env.example` a `.e
 mvn spring-boot:run
 ```
 
-## 📡 Endpoints de la API
+## Endpoints de la API
 
 ### Franquicias
 
@@ -146,7 +146,7 @@ mvn spring-boot:run
 |--------|----------|-------------|
 | GET | `/api/franquicias/{franquiciaId}/productos-max-stock` | Productos con máximo stock por sucursal |
 
-## 📝 Ejemplos de Uso
+## Ejemplos de Uso
 
 ### Crear una Franquicia
 
@@ -195,7 +195,7 @@ curl -X PATCH http://localhost:8080/api/franquicias/{franquiciaId}/sucursales/{s
 curl http://localhost:8080/api/franquicias/{franquiciaId}/productos-max-stock
 ```
 
-## 🧪 Pruebas Unitarias
+## Pruebas Unitarias
 
 Los tests unitarios se encuentran en `src/test/java/com/franquicias/`.
 
@@ -217,7 +217,7 @@ Con cobertura de código:
 mvn test jacoco:report
 ```
 
-## 🐳 Docker
+## Docker
 
 ### Construir imagen
 
@@ -251,7 +251,7 @@ docker-compose down
 docker-compose logs -f
 ```
 
-## 🏗️ Infrastructure as Code con Terraform
+## Infrastructure as Code con Terraform
 
 ### Inicializar Terraform
 
@@ -284,7 +284,7 @@ terraform output
 terraform destroy
 ```
 
-## 📊 Flujo de Git
+## Flujo de Git
 
 1. **rama feature**: Nuevas características
 2. **rama develop**: Integración de cambios
@@ -308,7 +308,7 @@ git push origin feature/nueva-funcionalidad
 # Después hacer release merge a main
 ```
 
-## 🔍 Variables de Entorno
+## Variables de Entorno
 
 | Variable | Valor por defecto | Descripción |
 |----------|-------------------|-------------|
@@ -319,7 +319,7 @@ git push origin feature/nueva-funcionalidad
 | MONGO_DATABASE | franquicias | Base de datos MongoDB |
 | API_PORT | 8080 | Puerto del servidor |
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### MongoDB no se conecta
 
@@ -339,7 +339,7 @@ git push origin feature/nueva-funcionalidad
 2. Eliminar dependencias: `rm -rf ~/.m2/repository`
 3. Reinstalar: `mvn install`
 
-## 📚 Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 - **Spring Boot 3.5.13**: Framework Java
 - **Spring WebFlux**: Programación reactiva
@@ -353,7 +353,7 @@ git push origin feature/nueva-funcionalidad
 - **JUnit 5**: Framework de testing
 - **Mockito**: Mocking para tests
 
-## 👨‍💻 Contribución
+## Contribución
 
 Las contribuciones son bienvenidas. Por favor:
 
@@ -363,11 +363,11 @@ Las contribuciones son bienvenidas. Por favor:
 4. Hacer push a la rama
 5. Crear un Pull Request
 
-## 📄 Licencia
+## Licencia
 
 Este proyecto está bajo licencia MIT.
 
-## 📧 Contacto
+## Contacto
 
 Para preguntas o sugerencias, contactar al equipo de desarrollo.
 

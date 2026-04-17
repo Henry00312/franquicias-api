@@ -18,7 +18,7 @@ import reactor.test.StepVerifier;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.when;
 
 /**
@@ -81,14 +81,42 @@ class ProductoServiceTest {
                 .build();
 
         when(sucursalRepository.findByIdAndFranquiciaId(sucursalId, franquiciaId)).thenReturn(Mono.just(sucursal));
+        when(productoRepository.existsBySucursalIdAndNombreIgnoreCase(sucursalId, "Producto Test")).thenReturn(Mono.just(false));
         when(productoMapper.toEntity(productoDTO)).thenReturn(productoEntity);
-        when(productoRepository.save(any(Producto.class))).thenReturn(Mono.just(productoEntity));
+        when(productoRepository.save(notNull())).thenReturn(Mono.just(productoEntity));
         when(productoMapper.toDTO(productoEntity)).thenReturn(productoResponseDTO);
 
         // Act & Assert
         StepVerifier.create(productoService.crearProducto(franquiciaId, sucursalId, productoDTO))
                 .expectNextMatches(dto -> dto.getId().equals("1") && dto.getNombre().equals("Producto Test"))
                 .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("Debe fallar al crear producto cuando el nombre ya existe en la sucursal")
+    void testCrearProductoDuplicado() {
+        // Arrange
+        String franquiciaId = "1";
+        String sucursalId = "1";
+
+        ProductoDTO productoDTO = ProductoDTO.builder()
+                .nombre("Producto Test")
+                .stock(100)
+                .build();
+
+        Sucursal sucursal = Sucursal.builder()
+                .id(sucursalId)
+                .franquiciaId(franquiciaId)
+                .build();
+
+        when(sucursalRepository.findByIdAndFranquiciaId(sucursalId, franquiciaId)).thenReturn(Mono.just(sucursal));
+        when(productoRepository.existsBySucursalIdAndNombreIgnoreCase(sucursalId, "Producto Test")).thenReturn(Mono.just(true));
+
+        // Act & Assert
+        StepVerifier.create(productoService.crearProducto(franquiciaId, sucursalId, productoDTO))
+                .expectErrorMatches(error -> error instanceof IllegalStateException
+                        && error.getMessage().equals("Ya existe un producto con ese nombre en la sucursal"))
+                .verify();
     }
 
     @Test
@@ -126,7 +154,7 @@ class ProductoServiceTest {
 
         when(sucursalRepository.findByIdAndFranquiciaId(sucursalId, franquiciaId)).thenReturn(Mono.just(sucursal));
         when(productoRepository.findByIdAndSucursalId(productoId, sucursalId)).thenReturn(Mono.just(producto));
-        when(productoRepository.save(any(Producto.class))).thenReturn(Mono.just(productoActualizado));
+        when(productoRepository.save(notNull())).thenReturn(Mono.just(productoActualizado));
         when(productoMapper.toDTO(productoActualizado)).thenReturn(productoDTO);
 
         // Act & Assert

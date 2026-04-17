@@ -13,4 +13,6 @@ import reactor.core.publisher.Mono;
 public interface FranquiciaRepository extends ReactiveMongoRepository<Franquicia, String> {
     
     Mono<Franquicia> findByNombre(String nombre);
+
+    Mono<Boolean> existsByNombreIgnoreCase(String nombre);
 }

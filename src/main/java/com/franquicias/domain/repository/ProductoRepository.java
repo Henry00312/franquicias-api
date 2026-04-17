@@ -16,6 +16,8 @@ public interface ProductoRepository extends ReactiveMongoRepository<Producto, St
     Flux<Producto> findBySucursalId(String sucursalId);
     
     Mono<Producto> findByIdAndSucursalId(String id, String sucursalId);
+
+    Mono<Boolean> existsBySucursalIdAndNombreIgnoreCase(String sucursalId, String nombre);
     
     Mono<Producto> findFirstBySucursalIdOrderByStockDesc(String sucursalId);
 }

@@ -34,6 +34,9 @@ public class FranquiciaController {
                 .map(dto -> ResponseEntity.status(HttpStatus.CREATED).body(dto))
                 .onErrorResume(error -> {
                     log.error("Error al crear franquicia", error);
+                    if (error instanceof IllegalStateException) {
+                        return Mono.just(ResponseEntity.status(HttpStatus.CONFLICT).build());
+                    }
                     return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
                 });
     }

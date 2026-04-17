@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.when;
 
 /**
@@ -61,14 +61,32 @@ class FranquiciaServiceTest {
                 .nombre("Franquicia Test")
                 .build();
 
+        when(franquiciaRepository.existsByNombreIgnoreCase("Franquicia Test")).thenReturn(Mono.just(false));
         when(franquiciaMapper.toEntity(franquiciaDTO)).thenReturn(franquiciaEntity);
-        when(franquiciaRepository.save(any(Franquicia.class))).thenReturn(Mono.just(franquiciaEntity));
+        when(franquiciaRepository.save(notNull())).thenReturn(Mono.just(franquiciaEntity));
         when(franquiciaMapper.toDTO(franquiciaEntity)).thenReturn(franquiciaResponseDTO);
 
         // Act & Assert
         StepVerifier.create(franquiciaService.crearFranquicia(franquiciaDTO))
                 .expectNextMatches(dto -> dto.getId().equals("1") && dto.getNombre().equals("Franquicia Test"))
                 .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("Debe fallar al crear franquicia cuando el nombre ya existe")
+    void testCrearFranquiciaDuplicada() {
+        // Arrange
+        FranquiciaDTO franquiciaDTO = FranquiciaDTO.builder()
+                .nombre("Franquicia Test")
+                .build();
+
+        when(franquiciaRepository.existsByNombreIgnoreCase("Franquicia Test")).thenReturn(Mono.just(true));
+
+        // Act & Assert
+        StepVerifier.create(franquiciaService.crearFranquicia(franquiciaDTO))
+                .expectErrorMatches(error -> error instanceof IllegalStateException
+                        && error.getMessage().equals("Ya existe una franquicia con ese nombre"))
+                .verify();
     }
 
     @Test
@@ -145,7 +163,7 @@ class FranquiciaServiceTest {
                 .build();
 
         when(franquiciaRepository.findById(franquiciaId)).thenReturn(Mono.just(franquicia));
-        when(franquiciaRepository.save(any(Franquicia.class))).thenReturn(Mono.just(franquiciaActualizada));
+        when(franquiciaRepository.save(notNull())).thenReturn(Mono.just(franquiciaActualizada));
         when(franquiciaMapper.toDTO(franquiciaActualizada)).thenReturn(franquiciaDTO);
 
         // Act & Assert

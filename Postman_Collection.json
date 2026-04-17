@@ -153,6 +153,7 @@
           "name": "Productos con Máximo Stock por Sucursal",
           "request": {
             "method": "GET",
+            "description": "Obtiene por franquicia el producto con mayor stock en cada sucursal.",
             "url": {"raw": "http://localhost:8080/api/franquicias/{{franquicia_id}}/productos-max-stock", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "franquicias", "{{franquicia_id}}", "productos-max-stock"]}
           }
         }

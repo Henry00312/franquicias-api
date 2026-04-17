@@ -1,7 +1,6 @@
 package com.franquicias.presentation.controller;
 
 import com.franquicias.application.dto.ProductoDTO;
-import com.franquicias.application.dto.ProductoMaxStockDTO;
 import com.franquicias.application.usecase.ProductoUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +37,9 @@ public class ProductoController {
                 .map(dto -> ResponseEntity.status(HttpStatus.CREATED).body(dto))
                 .onErrorResume(error -> {
                     log.error("Error al crear producto", error);
+                    if (error instanceof IllegalStateException) {
+                        return Mono.just(ResponseEntity.status(HttpStatus.CONFLICT).build());
+                    }
                     return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
                 });
     }
@@ -127,14 +129,4 @@ public class ProductoController {
             });
     }
 
-    /**
-     * Obtiene los productos con máximo stock por sucursal de una franquicia.
-     * GET /api/franquicias/{franquiciaId}/productos-max-stock
-     */
-    @GetMapping("/../max-stock")
-    public Mono<ResponseEntity<Flux<ProductoMaxStockDTO>>> obtenerProductosMaxStockPorSucursal(
-            @PathVariable String franquiciaId) {
-        log.info("Solicitud de obtener productos máximos por sucursal de franquicia: {}", franquiciaId);
-        return Mono.just(ResponseEntity.ok(productoUseCase.obtenerProductosMaxStockPorSucursal(franquiciaId)));
-    }
 }
